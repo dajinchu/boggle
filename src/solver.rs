@@ -37,7 +37,7 @@ fn find_best_acc(
         return None;
     }
     word_so_far.push(char_at);
-    println!("path: {:?}, word: {:?}", path, word_so_far);
+    // println!("path: {:?}, word: {:?}", path, word_so_far);
 
     match words.traverse(word_so_far) {
         Some(dict) => {
@@ -55,7 +55,7 @@ fn find_best_acc(
                     )
                 })
                 .max_by(|x, y| x.chars().count().cmp(&y.chars().count()));
-            println!("word so far: {:} best: {:?}", word_so_far, best);
+            // println!("word so far: {:} best: {:?}", word_so_far, best);
             match best {
                 Some(s) => Some(s),
                 None => {

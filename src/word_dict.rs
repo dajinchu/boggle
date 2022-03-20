@@ -1,21 +1,19 @@
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, Error};
 
 #[derive(Clone, Debug)]
 pub struct DictEntry {
-    next: Box<WordDict>,
+    next: WordDict,
     pub is_word: bool,
 }
 
-pub type WordDict = [Option<DictEntry>; 26];
+pub type WordDict = HashMap<char, DictEntry>;
 
 impl DictEntry {
     pub fn blank() -> DictEntry {
         DictEntry {
-            next: Box::new([
-                None, None, None, None, None, None, None, None, None, None, None, None, None, None,
-                None, None, None, None, None, None, None, None, None, None, None, None,
-            ]),
+            next: HashMap::new(),
             is_word: false,
         }
     }
@@ -33,12 +31,10 @@ impl DictEntry {
     pub fn add_word(&mut self, word: String) {
         let mut cursor = self;
         for c in word.chars() {
-            if cursor.next[char_to_index(c)].is_none() {
-                cursor.next[char_to_index(c)] = Some(DictEntry::blank());
+            if !cursor.next.contains_key(&c) {
+                cursor.next.insert(c, DictEntry::blank());
             }
-            let entry = cursor.next.as_mut()[char_to_index(c)]
-                .as_mut()
-                .expect("failed to build word dict");
+            let entry = cursor.next.get_mut(&c).unwrap();
             cursor = entry;
         }
         cursor.is_word = true;
@@ -47,7 +43,7 @@ impl DictEntry {
     pub fn traverse(&self, word: &str) -> Option<&DictEntry> {
         let mut cursor = self;
         for c in word.chars() {
-            match cursor.next[char_to_index(c)].as_ref() {
+            match cursor.next.get(&c) {
                 None => return None,
                 Some(words) => {
                     cursor = words;
@@ -77,7 +73,7 @@ mod tests {
         while stack.len() > 0 {
             let dict = stack.pop().unwrap();
             count +=1;
-            stack.append(&mut dict.next.iter().flatten().collect())
+            stack.append(&mut dict.next.values().collect())
         }
         assert_eq!(count, 1027815);
     }

@@ -23,9 +23,9 @@ fn main() {
         board.push(row.chars().collect::<Vec<char>>());
     }
 
-    println!("{}", size_of::<[Box<word_dict::DictEntry>;26]>());
+    // println!("{}", size_of::<[Box<word_dict::DictEntry>;26]>());
 
-    // println!("{:}", find_best(&words, &board));
+    println!("{:}", find_best(&words, &board));
 
     // println!("{:?}", words.valid_word_start("oranguta".to_string()));
 }

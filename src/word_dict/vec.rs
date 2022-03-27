@@ -32,8 +32,6 @@ impl TrieVec {
         }
         Ok(dict)
     }
-}
-impl Trie for TrieVec {
     fn add_word(&mut self, word: &str) {
         let mut cursor = self;
         for c in word.chars() {
@@ -48,6 +46,8 @@ impl Trie for TrieVec {
         cursor.is_word = true;
     }
 
+}
+impl Trie for TrieVec {
     fn traverse(&self, word: &str) -> Option<&dyn Trie> {
         let mut cursor = self;
         for c in word.chars() {

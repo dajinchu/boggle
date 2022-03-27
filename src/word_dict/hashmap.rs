@@ -27,9 +27,6 @@ impl TrieHashMap {
         }
         Ok(dict)
     }
-}
-
-impl Trie for TrieHashMap {
     fn add_word(&mut self, word: &str) {
         let mut cursor = self;
         for c in word.chars() {
@@ -41,7 +38,9 @@ impl Trie for TrieHashMap {
         }
         cursor.is_word = true;
     }
+}
 
+impl Trie for TrieHashMap {
     fn traverse(&self, word: &str) -> Option<&dyn Trie> {
         let mut cursor = self;
         for c in word.chars() {
@@ -85,7 +84,7 @@ mod tests {
         stack.push(&dict);
         while stack.len() > 0 {
             let dict = stack.pop().unwrap();
-            count +=1;
+            count += 1;
             stack.append(&mut dict.next.values().collect())
         }
         assert_eq!(count, 1027815);
@@ -95,5 +94,4 @@ mod tests {
     fn bench_build_dict(b: &mut Bencher) {
         b.iter(|| TrieHashMap::from_file("./words_alpha.txt").unwrap())
     }
-
 }

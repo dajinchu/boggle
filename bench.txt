@@ -1,7 +1,7 @@
 linked list trie
-test solver::tests::bench_solver        ... bench:      40,805 ns/iter (+/- 2,444)
+test solver::tests::bench_solver        ... bench:      52,304 ns/iter (+/- 3,703)
 test word_dict::tests::bench_build_dict ... bench: 170,556,966 ns/iter (+/- 9,907,594)
-            25247744  peak memory footprint
+            33390592  peak memory footprint
 
 new hashmap system
 test solver::tests::bench_solver        ... bench:      42,991 ns/iter (+/- 3,892)
@@ -16,3 +16,9 @@ test word_dict::tests::bench_build_dict ... bench: 507,680,082 ns/iter (+/- 111,
 naive binary search
 test solver::tests::bench_solver        ... bench:     122,371 ns/iter (+/- 8,005)
             20586496  peak memory footprint
+
+
+linked list trie WITH typed arena
+test solver::tests::bench_solver                               ... bench:      51,887 ns/iter (+/- 5,308)
+test word_dict::linkedlist_typedarena::tests::bench_build_dict ... bench:  87,866,931 ns/iter (+/- 6,532,989)
+            25202688  peak memory footprint

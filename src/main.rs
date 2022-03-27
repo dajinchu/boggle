@@ -5,6 +5,9 @@ mod word_dict;
 use std::fs::File;
 use std::io::{self, BufRead};
 
+use typed_arena::Arena;
+use word_dict::linkedlist_typedarena::TrieLinkedListArena;
+
 use crate::solver::find_best;
 use crate::word_dict::Trie;
 use crate::word_dict::hashmap::TrieHashMap;
@@ -16,7 +19,8 @@ type Board = Vec<Vec<char>>;
 type Pos = (usize, usize);
 
 fn main() {
-    let words = TrieLinkedList::from_file("./words_alpha.txt").unwrap();
+    let arena = Arena::with_capacity(1027814);
+    let words = TrieLinkedListArena::from_file("./words_alpha.txt", &arena).unwrap();
 
     let mut board: Board = Vec::new();
     let lines = io::BufReader::new(File::open("./board2.txt").unwrap()).lines();

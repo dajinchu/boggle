@@ -104,18 +104,20 @@ fn neighbors(board: &Board, pos: Pos) -> Vec<Pos> {
 
 #[cfg(test)]
 mod tests {
-    use crate::word_dict::linkedlist::TrieLinkedList;
+    use crate::word_dict::{linkedlist::TrieLinkedList, linkedlist_typedarena::TrieLinkedListArena};
 
     use test::Bencher;
+    use typed_arena::Arena;
     use super::*;
 
-    fn make_dict() -> TrieLinkedList {
-        TrieLinkedList::from_file("./words_alpha.txt").unwrap()
-    }
+    // fn make_dict() -> impl Trie {
+    //     TrieLinkedListArena::from_file("./words_alpha.txt").unwrap()
+    // }
 
     #[test]
     fn it_works() {
-        let words = make_dict();
+    let arena = Arena::with_capacity(1027814);
+    let words = TrieLinkedListArena::from_file("./words_alpha.txt", &arena).unwrap();
         let board = vec![
             vec!['x', 'y', 'q'],
             vec!['h', ' ', 'o'],
@@ -126,7 +128,8 @@ mod tests {
 
     #[bench]
     fn bench_solver(b: &mut Bencher) {
-        let words = make_dict();
+    let arena = Arena::with_capacity(1027814);
+    let words = TrieLinkedListArena::from_file("./words_alpha.txt", &arena).unwrap();
         let board = vec![
             vec!['x', 'y', 'q'],
             vec!['h', ' ', 'o'],

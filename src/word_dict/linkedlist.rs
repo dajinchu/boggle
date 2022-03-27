@@ -1,14 +1,34 @@
+use std::fmt::Debug;
 use std::fs::File;
 use std::io::{BufRead, Error};
 
 use super::Trie;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct TrieLinkedList {
     child: Option<Box<TrieLinkedList>>,
     sibling: Option<Box<TrieLinkedList>>,
     letter: char,
     is_word: bool,
+}
+
+fn print_siblings(trie: Option<&TrieLinkedList>) -> String {
+    if let Some(t) = trie {
+        t.letter.to_string() + &print_siblings(t.sibling.as_deref())
+    } else {
+        String::new()
+    }
+}
+
+impl Debug for TrieLinkedList {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_fmt(format_args!(
+            "{}=>{}\n \\{}",
+            self.letter,
+            print_siblings(self.sibling.as_deref()),
+            print_siblings(self.child.as_deref())
+        ))
+    }
 }
 
 impl TrieLinkedList {
@@ -35,10 +55,9 @@ impl TrieLinkedList {
 impl Trie for TrieLinkedList {
     fn add_word(&mut self, word: &str) {
         let mut cursor = self;
-        let mut chars = word.chars().peekable();
+        let mut chars = word.chars().peekable().enumerate();
         // println!("adding word {}", word);
-        while let Some(c) = chars.next() {
-            // println!("cursor: {:?}", cursor);
+        while let Some((i,c)) = chars.next() {
             match cursor.child {
                 None => {
                     // println!("none child");
@@ -67,7 +86,7 @@ impl Trie for TrieLinkedList {
                             Some(ref sibling) if sibling.letter > c => {
                                 cursor.sibling = Some(Box::new(TrieLinkedList {
                                     child: None,
-                                    sibling: cursor.child.take(),
+                                    sibling: cursor.sibling.take(),
                                     letter: c,
                                     is_word: false,
                                 }));
@@ -119,10 +138,21 @@ mod tests {
         dict.add_word("hell");
         dict.add_word("abc");
         dict.add_word("hello");
+        dict.add_word("spoon");
+        dict.add_word("spoonlike");
+        dict.add_word("spoony");
+        dict.add_word("spoonmaker");
+        dict.add_word("spoonmaking");
+        dict.add_word("spoons");
         assert_eq!(dict.traverse("abc").unwrap().is_word(), true);
         assert_eq!(dict.traverse("hello").unwrap().is_word(), true);
         assert_eq!(dict.traverse("he").unwrap().is_word(), false);
         assert_eq!(dict.traverse("fjidso").is_none(), true);
+        assert_eq!(dict.traverse("spoonlike").unwrap().is_word(), true);
+        assert_eq!(dict.traverse("spoonmaker").unwrap().is_word(), true);
+        assert_eq!(dict.traverse("spoonmaking").unwrap().is_word(), true);
+        assert_eq!(dict.traverse("spoons").unwrap().is_word(), true);
+        assert_eq!(dict.traverse("spoonm").unwrap().is_word(), false);
     }
 
     #[test]

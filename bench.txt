@@ -1,0 +1,18 @@
+linked list trie
+test solver::tests::bench_solver        ... bench:      40,805 ns/iter (+/- 2,444)
+test word_dict::tests::bench_build_dict ... bench: 170,556,966 ns/iter (+/- 9,907,594)
+            25247744  peak memory footprint
+
+new hashmap system
+test solver::tests::bench_solver        ... bench:      42,991 ns/iter (+/- 3,892)
+test word_dict::tests::bench_build_dict ... bench: 443,264,001 ns/iter (+/- 14,414,856)
+memory: 
+           232730624  peak memory footprint
+
+array system
+test solver::tests::bench_solver        ... bench:      79,998 ns/iter (+/- 5,980)
+test word_dict::tests::bench_build_dict ... bench: 507,680,082 ns/iter (+/- 111,524,011)
+
+naive binary search
+test solver::tests::bench_solver        ... bench:     122,371 ns/iter (+/- 8,005)
+            20586496  peak memory footprint

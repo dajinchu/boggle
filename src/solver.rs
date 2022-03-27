@@ -1,7 +1,7 @@
-use crate::{word_dict::DictEntry, Board, Pos};
+use crate::{word_dict::Trie, Board, Pos};
 
 // Find longest word in the board
-pub fn find_best(words: &DictEntry, board: &Board) -> String {
+pub fn find_best(words: &dyn Trie, board: &Board) -> String {
     let mut best = "".to_string();
     let height = board.len();
     let width = board[0].len();
@@ -26,7 +26,7 @@ pub fn find_best(words: &DictEntry, board: &Board) -> String {
 
 // Find longest word in the board if we've already taken the given path to build the given string
 fn find_best_acc(
-    words: &DictEntry,
+    words: &dyn Trie,
     board: &Board,
     pos: Pos,
     word_so_far: &mut String,
@@ -59,7 +59,7 @@ fn find_best_acc(
             match best {
                 Some(s) => Some(s),
                 None => {
-                    if dict.is_word {
+                    if dict.is_word() {
                         Some(word_so_far.to_string())
                     } else {
                         None
@@ -104,13 +104,13 @@ fn neighbors(board: &Board, pos: Pos) -> Vec<Pos> {
 
 #[cfg(test)]
 mod tests {
-    use crate::word_dict::DictEntry;
+    use crate::word_dict::linkedlist::TrieLinkedList;
 
     use test::Bencher;
     use super::*;
 
-    fn make_dict() -> DictEntry {
-        DictEntry::from_file("./words_alpha.txt").unwrap()
+    fn make_dict() -> TrieLinkedList {
+        TrieLinkedList::from_file("./words_alpha.txt").unwrap()
     }
 
     #[test]

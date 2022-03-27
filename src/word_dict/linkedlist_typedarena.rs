@@ -119,8 +119,8 @@ impl<'a> TrieLinkedListArena<'a> {
         // cursor.is_word = true;
     }
 }
-impl Trie for TrieLinkedListArena<'_> {
-    fn traverse(&self, word: &str) -> Option<&dyn Trie> {
+impl<'a> Trie for TrieLinkedListArena<'a> {
+    fn traverse(&self, word: &str) -> Option<&TrieLinkedListArena<'a>> {
         let mut cursor = self;
         for c in word.chars() {
             match cursor.child.get() {

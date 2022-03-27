@@ -41,7 +41,7 @@ impl TrieHashMap {
 }
 
 impl Trie for TrieHashMap {
-    fn traverse(&self, word: &str) -> Option<&dyn Trie> {
+    fn traverse(&self, word: &str) -> Option<&TrieHashMap> {
         let mut cursor = self;
         for c in word.chars() {
             match cursor.next.get(&c) {

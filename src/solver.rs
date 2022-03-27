@@ -1,7 +1,7 @@
 use crate::{word_dict::Trie, Board, Pos};
 
 // Find longest word in the board
-pub fn find_best(words: &dyn Trie, board: &Board) -> (String, Vec<Pos>) {
+pub fn find_best(words: &impl Trie, board: &Board) -> (String, Vec<Pos>) {
     let mut best = ("".to_string(), Vec::new());
     let height = board.len();
     let width = board[0].len();
@@ -26,7 +26,7 @@ pub fn find_best(words: &dyn Trie, board: &Board) -> (String, Vec<Pos>) {
 
 // Find longest word in the board if we've already taken the given path to build the given string
 fn find_best_acc(
-    words: &dyn Trie,
+    words: &impl Trie,
     board: &Board,
     pos: Pos,
     word_so_far: &mut String,

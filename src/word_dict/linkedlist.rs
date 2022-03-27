@@ -101,7 +101,7 @@ impl TrieLinkedList {
 }
 
 impl Trie for TrieLinkedList {
-    fn traverse(&self, word: &str) -> Option<&dyn Trie> {
+    fn traverse(&self, word: &str) -> Option<&TrieLinkedList> {
         let mut cursor = self;
         for c in word.chars() {
             match cursor.child.as_ref() {

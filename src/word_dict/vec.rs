@@ -48,7 +48,7 @@ impl TrieVec {
 
 }
 impl Trie for TrieVec {
-    fn traverse(&self, word: &str) -> Option<&dyn Trie> {
+    fn traverse(&self, word: &str) -> Option<&TrieVec> {
         let mut cursor = self;
         for c in word.chars() {
             match cursor.next[char_to_index(c)].as_ref() {
